@@ -82,7 +82,7 @@ client.once("ready", async () => {
     channelCountChannel.setName(`Channel Count: ${channelTotal}`);
 
 
-  }, 10000);
+  }, 3.6e+6);
 
 
 });
