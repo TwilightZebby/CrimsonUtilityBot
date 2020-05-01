@@ -35,6 +35,56 @@ client.once("ready", async () => {
 
 
   console.log("I am ready!");
+
+
+
+
+
+
+
+
+  // For the server's Stats Channels
+  // Should refresh once every hour to prevent API rate-limiting
+
+  // Fetch Channels
+  let memberCountChannel = client.channels.resolve('705826480306913281');
+  let botCountChannel = client.channels.resolve('705826767679651842');
+  let roleCountChannel = client.channels.resolve('705826598166855701');
+  let channelCountChannel = client.channels.resolve('705826700927434884');
+
+  // Fetch Guild & CrimsonRoulette Bot
+  let guildObj = client.guilds.resolve('681805468749922308');
+
+  client.setInterval(() => {
+
+    // Fetch stats
+
+    // Member Count WITHOUT BOTS
+    let memberTotal = Array.from(guildObj.members.cache.values()).filter(member => { return !member.user.bot; }).length;
+    let botTotal = Array.from(guildObj.members.cache.values()).filter(member => { return member.user.bot; }).length;
+    let roleTotal = Array.from(guildObj.roles.cache.values()).length;
+
+    let channelTotal = Array.from(guildObj.channels.cache.values()).filter(channel => { 
+      let temp = true;
+      if (channel.type === 'category') {
+        temp = false;
+      } else {
+        temp = true;
+      }
+      return temp;
+    }).length;
+
+    
+    // Update Channel Names to reflect fetched values
+    memberCountChannel.setName(`Member Count: ${memberTotal}`);
+    botCountChannel.setName(`Bot Count: ${botTotal}`);
+    roleCountChannel.setName(`Role Count: ${roleTotal}`);
+    channelCountChannel.setName(`Channel Count: ${channelTotal}`);
+
+
+  }, 10000);
+
+
 });
 
 
