@@ -13,7 +13,7 @@ module.exports = {
       
       const prefixEmbed = new Discord.MessageEmbed().setColor('#07f51b');
 
-      prefixEmbed.setDescription(`Current Prefix: \`${PREFIX}\` *or* \<\@${client.user.id}\>`);
+      prefixEmbed.setDescription(`Prefix: \`${PREFIX}\` *or* \<\@${client.user.id}\>`);
 
       return message.channel.send(prefixEmbed);
       

@@ -7,7 +7,6 @@ let { PREFIX, TOKEN } = require('./config.js'); // Slapping the PREFIX and token
 client.commands = new Discord.Collection(); // Extends JS's native map class
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js')); // Picks up all the .js files in the commands folder
 const cooldowns = new Discord.Collection(); // For Cooldowns to work
-const lvlCooldowns = new Discord.Collection(); // For Cooldowns specific to Levelling
 
 
 
@@ -406,6 +405,14 @@ client.on("message", async (message) => {
           reply += `\nThe proper usage would be: \`${PREFIX}${command.name} ${command.usage}\``;
         }
         return message.channel.send(reply);
+    }
+
+
+
+    // Check if the command is Owner-only
+    // (looks for 'ownerOnly: true')
+    if ( command.ownerOnly && message.author.id !== '156482326887530498' ) {
+      return message.reply(`Sorry, but that command can only be used by TwilightZebby himself.`);
     }
     
   
