@@ -1,10 +1,10 @@
-let { PREFIX } = require('../config.js');
+let { PREFIX } = require('../../config.js');
 const Discord = require("discord.js");
-const { client } = require('../bot_modules/constants.js');
+const { client } = require('../../bot_modules/constants.js');
 
 module.exports = {
-    name: 'approve',
-    description: 'Used to approve a Suggestion',
+    name: 'accept',
+    description: 'Used to accept a Suggestion',
     usage: '<suggestionID> <reason>',
     //aliases: [''],
     args: true,
@@ -51,7 +51,7 @@ module.exports = {
 
       // Tweak Embed to reflect new status
       messageEmbed.setDescription(`**Total Votes:**\n${upvoteEmoji} : ${upvoteCount}\n\n${downvoteEmoji} : ${downvoteCount}`);
-      messageEmbed.setTitle(`Approved Suggestion`);
+      messageEmbed.setTitle(`Accepted Suggestion`);
       messageEmbed.setTimestamp(messageDate);
       messageEmbed.addFields(
         { name: `Reason (by ${message.member.displayName})`, value: approveReason }
@@ -62,7 +62,10 @@ module.exports = {
       await archiveChannel.send(messageEmbed);
       
       // Delete original suggestion for tidiness
-      await suggestionMessage.delete({ timeout: 5000, reason: `Approved suggestion` });
+      await suggestionMessage.delete({ timeout: 5000, reason: `Accepted suggestion` });
+
+
+      return await message.reply(`Suggestion was accepted!`);
 
 
 

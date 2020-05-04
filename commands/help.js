@@ -24,6 +24,7 @@ module.exports = {
 
         helpEmbed.addFields({ name: "General Commands", value: commands.filter(command => command.commandType === 'general').map(command => command.name).join(', ') });
         helpEmbed.addFields({ name: "Suggestion Commands", value: commands.filter(command => command.commandType === 'suggestion').map(command => command.name).join(', ') });
+        helpEmbed.addFields({ name: "Ticket Commands", value: commands.filter(command => command.commandType === 'ticket').map(command => command.name).join(', ') });
 
         helpEmbed.addFields({ name: "\u200B", value: `You can use \`${PREFIX}help [command]\` to get more info on a specific command!` });
 

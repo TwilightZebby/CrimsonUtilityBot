@@ -1,6 +1,6 @@
-let { PREFIX } = require('../config.js');
+let { PREFIX } = require('../../config.js');
 const Discord = require("discord.js");
-const { client } = require('../bot_modules/constants.js');
+const { client } = require('../../bot_modules/constants.js');
 
 module.exports = {
     name: 'deny',
@@ -64,6 +64,9 @@ module.exports = {
       
       // Delete original suggestion for tidiness
       await suggestionMessage.delete({ timeout: 5000, reason: `Denied suggestion` });
+
+
+      return await message.reply(`Suggestion was rejected!`);
 
 
 

@@ -5,12 +5,16 @@ const { client } = require('./bot_modules/constants.js'); // Brings in the Disco
 let { PREFIX, TOKEN } = require('./config.js'); // Slapping the PREFIX and token into their own vars
 
 client.commands = new Discord.Collection(); // Extends JS's native map class
+
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js')); // Picks up all the .js files in the commands folder
+const suggestionFiles = fs.readdirSync('./commands/suggestion').filter(file => file.endsWith('.js')); // Picks up Suggestion Module Commands
+const ticketFiles = fs.readdirSync('./commands/ticket').filter(file => file.endsWith('.js')); // Picks up Ticket Module Commands
+
 const cooldowns = new Discord.Collection(); // For Cooldowns to work
 
 
 
-
+// GENERAL COMMANDS
 for (const file of commandFiles) { // Slaps all the command files into the Collection
     const command = require(`./commands/${file}`);
 
@@ -19,6 +23,25 @@ for (const file of commandFiles) { // Slaps all the command files into the Colle
     client.commands.set(command.name, command);
 }
 
+
+// SUGGESTION COMMANDS
+for (const file of suggestionFiles) {
+  const command = require(`./commands/suggestion/${file}`);
+
+  // set a new item in the Collection
+  // with the key as the command name and the value as the exported module
+  client.commands.set(command.name, command);
+}
+
+
+// TICKET COMMANDS
+for (const file of ticketFiles) {
+  const command = require(`./commands/ticket/${file}`);
+
+  // set a new item in the Collection
+  // with the key as the command name and the value as the exported module
+  client.commands.set(command.name, command);
+}
 
 
 
