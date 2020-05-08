@@ -134,6 +134,7 @@ process.on('unhandledRejection', error => console.error('Uncaught Promise Reject
 /***********************************************/
 // WHEN A NEW MEMBER JOINS A GUILD
 //     - Welcome messages
+//     - Verification
 
 
 // Randomiseable parts of message
@@ -143,7 +144,8 @@ const welcomeTitles = [
   'LET\'S GET READY TO RUMBLEEEEEEE!',
   'The stars have aligned for this moment...',
   'A new User joined the server!',
-  'A new Peep joined the server!'
+  'A new Peep joined the server!',
+  'Hey look, the pizza has arrived!'
 ];
 
 
@@ -177,14 +179,25 @@ client.on('guildMemberAdd', async (member) => {
 
   welcomeChannel.send(welcomeEmbed);
 
+  
+  let verifyChannel = member.guild.channels.resolve('681806729389801472');
+
+
+  // Lock channel for User to prevent early access in case something breaks
+  await verifyChannel.createOverwrite(member, {
+    SEND_MESSAGES: false,
+  }, "New Member, lock channel for them for 10 minutes")
+  .catch(console.error);
+
 
   // Push a reminder for the new User to use the verification command
   // (after 10 minutes)
-  let verifyChannel = member.guild.channels.resolve('681806729389801472');
 
-  client.setTimeout(() => {
+  client.setTimeout(async () => {
 
-    verifyChannel.send(`Hey there ${member}! This is just a friendly reminder to verify yourself so you can gain access to the rest of this Server!`);
+    verifyChannel.permissionOverwrites.get(member.id).delete();
+
+    await verifyChannel.send(`Hey there ${member}! This is just a friendly reminder to verify yourself so you can gain access to the rest of this Server!`);
 
   }, 600000);
   

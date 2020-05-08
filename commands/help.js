@@ -15,16 +15,16 @@ module.exports = {
 
 
 
-      if (!args.length) {
+      if (!args.length && message.author.id !== '156482326887530498') {
 
         helpEmbed.setTitle(`Here is a list of all my commands:`);
         helpEmbed.setDescription(`< > means that is required.\n[ ] means that is optional.\n| means either/or.\n**DO NOT include these symbols when typing out the commands!**`);
 
         // helpEmbed.addFields({ name: "\u200B", value: "\u200B" });
 
-        helpEmbed.addFields({ name: "General Commands", value: commands.filter(command => command.commandType === 'general').map(command => command.name).join(', ') });
-        helpEmbed.addFields({ name: "Suggestion Commands", value: commands.filter(command => command.commandType === 'suggestion').map(command => command.name).join(', ') });
-        helpEmbed.addFields({ name: "Ticket Commands", value: commands.filter(command => command.commandType === 'ticket').map(command => command.name).join(', ') });
+        helpEmbed.addFields({ name: "General Commands", value: commands.filter(command => command.commandType === 'general' && command.ownerOnly !== true && command.hidden !== true).map(command => command.name).join(', ') });
+        helpEmbed.addFields({ name: "Suggestion Commands", value: commands.filter(command => command.commandType === 'suggestion' && command.ownerOnly !== true && command.hidden !== true).map(command => command.name).join(', ') });
+        helpEmbed.addFields({ name: "Ticket Commands", value: commands.filter(command => command.commandType === 'ticket' && command.ownerOnly !== true && command.hidden !== true).map(command => command.name).join(', ') });
 
         helpEmbed.addFields({ name: "\u200B", value: `You can use \`${PREFIX}help [command]\` to get more info on a specific command!` });
 
