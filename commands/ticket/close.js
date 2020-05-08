@@ -8,6 +8,7 @@ module.exports = {
     usage: '[Reason]',
     //aliases: [''],
     //args: true,
+    ownerOnly: true,
     commandType: 'ticket',
     async execute(message, args) {
       
