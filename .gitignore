@@ -1,4 +1,4 @@
 /node_modules
-/bot_modules
+/bot_modules/constants.js
 /helpful_stuff
 config.js
