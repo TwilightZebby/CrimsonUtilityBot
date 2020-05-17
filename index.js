@@ -145,7 +145,8 @@ const welcomeTitles = [
   'The stars have aligned for this moment...',
   'A new User joined the server!',
   'A new Peep joined the server!',
-  'Hey look, the pizza has arrived!'
+  'Hey look, the pizza has arrived!',
+  'A new challenger approaches!'
 ];
 
 
