@@ -31,7 +31,9 @@ module.exports = {
       .setThumbnail(message.author.displayAvatarURL())
       .setDescription(feedback);
 
-      return await feedbackChannel.send(feedbackEmbed);
+      await feedbackChannel.send(feedbackEmbed);
+      await message.delete();
+      return;
 
 
       //END OF COMMAND
