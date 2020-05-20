@@ -303,8 +303,54 @@ client.on("message", async (message) => {
 
   // Prevent DM Usage ;P
   if ( message.channel.type === 'dm' ) {
-    return;
+    
+    // Log all messages sent to the Bot's DMs as a just in case thing
+    const dmLogEmbed = new Discord.MessageEmbed().setColor('#07f51b').setFooter('DM Logs');
+    let logChannel = client.guilds.resolve('681805468749922308').channels.resolve('712595019210555442');
+    let noMsgArray = [' ', undefined, null];
+
+
+
+    // Basic Embed Details
+    dmLogEmbed.setTitle(`DM from ${message.author.username}\#${message.author.discriminator}`)
+    .setThumbnail(message.author.displayAvatarURL());
+
+
+
+    // Check for attachments
+    let msgAttachments = Array.from(message.attachments.values());
+    if ( !msgAttachments.length ) {
+
+      // No Attachments, just output message
+      dmLogEmbed.setDescription(message.content);
+      return await logChannel.send(dmLogEmbed);
+
+    }
+    else if ( msgAttachments.length >= 1 && !noMsgArray.includes(message.content) ) {
+
+      // Yes Attachments and yes Message Content
+      dmLogEmbed.setDescription(message.content)
+      .setImage(msgAttachments[0].url);
+      return await logChannel.send(dmLogEmbed);
+
+    } else if ( msgAttachments.length >= 1 && noMsgArray.includes(message.content) ) {
+
+      // Yes Attachments but no message content
+      dmLogEmbed.setImage(msgAttachments[0].url);
+      return await logChannel.send(dmLogEmbed);
+
+    }
+
   }
+
+
+
+
+
+
+
+
+
 
   // If the msg it was sent by the bot itself - STOP
   if ( message.author.bot ) {
