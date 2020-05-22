@@ -371,7 +371,7 @@ client.on("message", async (message) => {
 
 
 
-  let botMember = message.guild.members.resolve('657859837023092746');
+  let botMember = message.guild.members.resolve(client.user);
 
   let readMsg = botMember.hasPermission('VIEW_CHANNEL', { checkAdmin: true });
   let sendMsg = botMember.hasPermission('SEND_MESSAGES', { checkAdmin: true });
