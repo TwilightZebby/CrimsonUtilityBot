@@ -191,6 +191,11 @@ client.on('guildMemberAdd', async (member) => {
   .catch(console.error);
 
 
+  // Give them "Need Verification" Role
+  let verifyRole = member.guild.roles.resolve('712224145064067112');
+  await member.roles.add(verifyRole);
+
+
   // Push a reminder for the new User to use the verification command
   // (after 10 minutes)
 

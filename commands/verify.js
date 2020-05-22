@@ -20,9 +20,11 @@ module.exports = {
       
       // Fetch stuff
       let verifyRole = message.guild.roles.resolve('693183650317074453');
+      let removeRole = member.guild.roles.resolve('712224145064067112');
 
       // Attach Role & delete message
       await message.member.roles.add(verifyRole, "Verification");
+      await message.member.roles.remove(removeRole, "Verified");
 
       return await message.delete();
 
