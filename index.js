@@ -66,7 +66,7 @@ client.once("ready", async () => {
 
 
   // For the server's Stats Channels
-  // Should refresh once every hour to prevent API rate-limiting
+  // Should refresh once every 20mins to prevent API rate-limiting
 
   // Fetch Channels
   let memberCountChannel = client.channels.resolve('705826480306913281');
@@ -77,11 +77,22 @@ client.once("ready", async () => {
   // Fetch Guild & CrimsonRoulette Bot
   let guildObj = client.guilds.resolve('681805468749922308');
 
+  // Fetch to store in cache
+  guildObj.members.fetch();
+  guildObj.roles.fetch();
+
+
   client.setInterval(() => {
+
+    // Re-Fetch to store updated values in cache
+    guildObj.members.fetch();
+    guildObj.roles.fetch();
+
+
 
     // Fetch stats
 
-    // Member Count WITHOUT BOTS
+    // Counts
     let memberTotal = Array.from(guildObj.members.cache.values()).filter(member => { return !member.user.bot; }).length;
     let botTotal = Array.from(guildObj.members.cache.values()).filter(member => { return member.user.bot; }).length;
     let roleTotal = Array.from(guildObj.roles.cache.values()).length;
@@ -104,7 +115,8 @@ client.once("ready", async () => {
     channelCountChannel.setName(`Channel Count: ${channelTotal}`);
 
 
-  }, 3.6e+6);
+  }, 1.2e+6);
+  //.
 
 
 });
