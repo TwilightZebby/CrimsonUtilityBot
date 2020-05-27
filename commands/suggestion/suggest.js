@@ -1,8 +1,10 @@
 let { PREFIX } = require('../../config.js');
 const Discord = require("discord.js");
 const { client } = require('../../bot_modules/constants.js');
+const fs = require('fs')
 
-let ticketNumber = 1;
+let ticketNumberStore = require('../../bot_storage/ticketNumbers.json');
+let ticketNumber = ticketNumberStore["suggestion"];
 
 module.exports = {
     name: 'suggest',
@@ -88,7 +90,7 @@ module.exports = {
 
 
         // Create new Ticket Channel
-        let ticketChannel = await message.guild.channels.create(`suggestion-${ticketNumber}`, {
+        let ticketChannel = await message.guild.channels.create(`suggestion-${ticketNumber}-${message.author.username}`, {
           type: 'text',
           topic: `${message.member.displayName}'s Suggestion (requires approval due to Attachment)`,
           parent: ticketSectionChannel,
@@ -102,14 +104,21 @@ module.exports = {
         suggestEmbed.setImage(attachmentURL);
 
         await ticketChannel.send(suggestEmbed);
-        await ticketChannel.send(`▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\nThis Suggestion needs approval before being displayed due to an attachment!\n\n\<\@156482326887530498\> will be here shortly, so please stand by.`);
+        await ticketChannel.send(`▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n${message.author} This Suggestion needs approval before being displayed due to an attachment!\n\n\<\@156482326887530498\> will be here shortly, so please stand by.`);
 
         
         // Notify Sender
         await message.reply(`I have detected an attachment (image, etc) on this Suggestion. Thus, it has been sent for approval just to ensure the attachment isn't rule-breaking.`);
         await message.delete();
 
-        ticketNumber++; // Just to prevent Dup Ticket Numbers in one sesson
+        // Just to prevent Dup Ticket Numbers
+        ticketNumber++;
+        ticketNumberStore["suggestion"] = ticketNumber;
+        // Write to file
+        fs.writeFile("./bot_storage/ticketNumbers.json", JSON.stringify(ticketNumberStore, null, 4), (err) => {
+          if(err) { console.log(err); } 
+        });
+
 
         return;
 
