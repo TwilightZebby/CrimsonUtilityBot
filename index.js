@@ -58,67 +58,6 @@ client.once("ready", async () => {
 
   console.log("I am ready!");
 
-
-
-
-
-
-
-
-  // For the server's Stats Channels
-  // Should refresh once every 20mins to prevent API rate-limiting
-
-  // Fetch Channels
-  let memberCountChannel = client.channels.resolve('705826480306913281');
-  let botCountChannel = client.channels.resolve('705826767679651842');
-  let roleCountChannel = client.channels.resolve('705826598166855701');
-  let channelCountChannel = client.channels.resolve('705826700927434884');
-
-  // Fetch Guild & CrimsonRoulette Bot
-  let guildObj = client.guilds.resolve('681805468749922308');
-
-  // Fetch to store in cache
-  guildObj.members.fetch();
-  guildObj.roles.fetch();
-
-
-  client.setInterval(() => {
-
-    // Re-Fetch to store updated values in cache
-    guildObj.members.fetch();
-    guildObj.roles.fetch();
-
-
-
-    // Fetch stats
-
-    // Counts
-    let memberTotal = Array.from(guildObj.members.cache.values()).filter(member => { return !member.user.bot; }).length;
-    let botTotal = Array.from(guildObj.members.cache.values()).filter(member => { return member.user.bot; }).length;
-    let roleTotal = Array.from(guildObj.roles.cache.values()).length;
-
-    let channelTotal = Array.from(guildObj.channels.cache.values()).filter(channel => { 
-      let temp = true;
-      if (channel.type === 'category') {
-        temp = false;
-      } else {
-        temp = true;
-      }
-      return temp;
-    }).length;
-
-    
-    // Update Channel Names to reflect fetched values
-    memberCountChannel.setName(`Member Count: ${memberTotal}`);
-    botCountChannel.setName(`Bot Count: ${botTotal}`);
-    roleCountChannel.setName(`Role Count: ${roleTotal}`);
-    channelCountChannel.setName(`Channel Count: ${channelTotal}`);
-
-
-  }, 1.2e+6);
-  //.
-
-
 });
 
 
@@ -127,6 +66,41 @@ client.once("ready", async () => {
 process.on('warning', console.warn);
 // Extra Error Catching
 process.on('unhandledRejection', error => console.error('Uncaught Promise Rejection', error));
+client.on("error", console.error);
+client.on("rateLimit", (rateLimitInfo) => {
+
+  console.log(`*******************************************`);
+  console.log(`RATELIMITED`);
+  console.log(` `);
+  console.log(`Timeout Length: ${rateLimitInfo.timeout}ms`);
+  console.log(`Number of Requests: ${rateLimitInfo.limit}`);
+  console.log(`HTTP Method used: ${rateLimitInfo.method}`);
+  console.log(`Path:\n${rateLimitInfo.path}`);
+  console.log(` `);
+  console.log(`Route:\n${rateLimitInfo.route}`);
+  console.log(`*******************************************`);
+
+  return;
+
+  // END of rateLimit EVENT
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -166,6 +140,19 @@ const welcomeTitles = [
 client.on('guildMemberAdd', async (member) => {
 
   if ( member.user.bot === true ) {
+
+    // For the server's Stats Channels
+    // Refreshes every time a Bot has joined
+
+    // Fetch Channels
+    let botCountChannel = client.channels.resolve('705826767679651842');
+
+    // Count
+    let botTotal = Array.from(member.guild.members.cache.values()).filter(member => { return member.user.bot; }).length;
+
+    // Update Channel Name to reflect fetched values
+    await botCountChannel.setName(`Bot Count: ${memberTotal}`);
+
     return;
   }
 
@@ -190,7 +177,7 @@ client.on('guildMemberAdd', async (member) => {
   welcomeEmbed.setThumbnail(userAvatar);
   welcomeEmbed.setFooter(`Total Server Members: ${guildMemberTotal} • Total Members without Bots: ${antiBotTotal}`);
 
-  welcomeChannel.send(welcomeEmbed);
+  await welcomeChannel.send(welcomeEmbed);
 
   
   let verifyChannel = member.guild.channels.resolve('681806729389801472');
@@ -218,10 +205,52 @@ client.on('guildMemberAdd', async (member) => {
     await verifyChannel.send(`Hey there ${member}! This is just a friendly reminder to verify yourself so you can gain access to the rest of this Server!`);
 
   }, 600000);
+
+
+
+
+
+
+
+
+
+
+  // For the server's Stats Channels
+  // Refreshes every time a Member has joined
+
+  // Fetch Channels
+  let memberCountChannel = client.channels.resolve('705826480306913281');
+
+  // Count
+  let memberTotal = Array.from(member.guild.members.cache.values()).filter(member => { return !member.user.bot; }).length;
+
+  // Update Channel Name to reflect fetched values
+  await memberCountChannel.setName(`Member Count: ${memberTotal}`);
   
 
   // End of guildMemberAdd Event
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -257,6 +286,19 @@ const leavingTitles = [
 client.on('guildMemberRemove', async (member) => {
 
   if ( member.user.bot === true ) {
+
+    // For the server's Stats Channels
+    // Refreshes every time a Bot has left
+
+    // Fetch Channels
+    let botCountChannel = client.channels.resolve('705826767679651842');
+
+    // Count
+    let botTotal = Array.from(member.guild.members.cache.values()).filter(member => { return member.user.bot; }).length;
+
+    // Update Channel Name to reflect fetched values
+    await botCountChannel.setName(`Bot Count: ${memberTotal}`);
+
     return;
   }
 
@@ -277,9 +319,256 @@ client.on('guildMemberRemove', async (member) => {
   leavingEmbed.setDescription(`${memberName} just left. ;-;`);
   leavingEmbed.setThumbnail(memberAvatar);
 
-  leavingChannel.send(leavingEmbed);
+  await leavingChannel.send(leavingEmbed);
+
+
+
+
+
+
+  // For the server's Stats Channels
+  // Refreshes every time a Member has left
+
+  // Fetch Channels
+  let memberCountChannel = client.channels.resolve('705826480306913281');
+
+  // Count
+  let memberTotal = Array.from(member.guild.members.cache.values()).filter(member => { return !member.user.bot; }).length;
+
+  // Update Channel Name to reflect fetched values
+  await memberCountChannel.setName(`Member Count: ${memberTotal}`);
 
   // End of guildMemberRemove Event
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***********************************************/
+// WHEN A CHANNEL IS CREATED
+client.on("channelCreate", async (channel) => {
+
+  if ( channel.type === "dm" ) {
+    return;
+  }
+
+
+
+  // For the server's Stats Channels
+  // Refreshes every time a Channel has been created
+
+  // Fetch Channels
+  let channelCountChannel = client.channels.resolve('705826700927434884');
+
+  // Count
+  let channelTotal = Array.from(channel.guild.channels.cache.values()).filter(channel => {
+    let temp = true;
+    if ( channel.type === "category" ) {
+      temp = false;
+    } else {
+      temp = true;
+    }
+    return temp;
+   }).length;
+
+  // Update Channel Name to reflect fetched values
+  await channelCountChannel.setName(`Channel Count: ${channelTotal}`);
+
+
+  // END of channelCreate EVENT
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***********************************************/
+// WHEN A CHANNEL IS DELETED
+client.on("channelDelete", async (channel) => {
+
+  if ( channel.type === "dm" ) {
+    return;
+  }
+
+
+
+  // For the server's Stats Channels
+  // Refreshes every time a Channel has been deleted
+
+  // Fetch Channels
+  let channelCountChannel = client.channels.resolve('705826700927434884');
+
+  // Count
+  let channelTotal = Array.from(channel.guild.channels.cache.values()).filter(channel => {
+    let temp = true;
+    if ( channel.type === "category" ) {
+      temp = false;
+    } else {
+      temp = true;
+    }
+    return temp;
+   }).length;
+
+  // Update Channel Name to reflect fetched values
+  await channelCountChannel.setName(`Channel Count: ${channelTotal}`);
+
+
+  // END of channelDelete EVENT
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***********************************************/
+// WHEN A ROLE IS CREATED
+client.on("roleCreate", async (role) => {
+
+  // For the server's Stats Channels
+  // Refreshes every time a Role was made
+
+  // Fetch Channels
+  let roleCountChannel = client.channels.resolve('705826598166855701');
+
+  // Count
+  let roleTotal = Array.from(role.guild.roles.cache.values()).length;
+
+  // Update Channel Name to reflect fetched values
+  await roleCountChannel.setName(`Role Count: ${roleTotal}`);
+
+  
+
+  // END of roleCreate EVENT
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***********************************************/
+// WHEN A ROLE IS DELETED
+client.on("roleDelete", async (role) => {
+
+  // For the server's Stats Channels
+  // Refreshes every time a Role was made
+
+  // Fetch Channels
+  let roleCountChannel = client.channels.resolve('705826598166855701');
+
+  // Count
+  let roleTotal = Array.from(role.guild.roles.cache.values()).length;
+
+  // Update Channel Name to reflect fetched values
+  await roleCountChannel.setName(`Role Count: ${roleTotal}`);
+
+  
+
+  // END of roleDelete EVENT
 });
 
 
