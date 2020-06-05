@@ -58,7 +58,17 @@ client.once("ready", async () => {
 
   console.log("I am ready!");
 
+
+  // Self-Assignable Notificiation Role Menu
+  await client.guilds.resolve("681805468749922308").channels.resolve("708593358624391178").messages.fetch();
+
 });
+
+
+
+
+
+
 
 
 
@@ -571,6 +581,142 @@ client.on("roleDelete", async (role) => {
   // END of roleDelete EVENT
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let reactionRolesJSON = require('./bot_storage/reactionRoles.json');
+let selfAssignRoleMenus = ["708594329588858881"];
+
+
+/***********************************************/
+// REACTION ADD
+// Used for managing the Self-Assignable Roles via Reaction Menus
+client.on("messageReactionAdd", async (reaction, user) => {
+
+  // Check message that Reaction was added to
+  let messageID = reaction.message.id;
+
+  if ( !selfAssignRoleMenus.includes(messageID) ) {
+    return;
+  }
+
+
+  // Notification Roles
+  if ( messageID === "708594329588858881" ) {
+
+    // Fetch Member Object from User ID
+    let guild = client.guilds.resolve("681805468749922308");
+    await guild.members.fetch();
+    await guild.roles.fetch();
+
+    let member = guild.members.resolve(user.id);
+    
+    // Check Emoji added
+    let emoji = reaction.emoji;
+    let role = guild.roles.resolve(reactionRolesJSON["selfRoleMenu"][emoji].roleID);
+    
+    // Add Role to User
+    return await member.roles.add(role, "Self-Assigned via #self-assign-roles");
+
+  }
+  
+
+
+  // END of messageReactionAdd Event
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***********************************************/
+// REACTION REMOVE
+// Used for managing the Self-Assignable Roles via Reaction Menus
+client.on("messageReactionRemove", async (reaction, user) => {
+
+  // Check message that Reaction was removed from
+  let messageID = reaction.message.id;
+
+  if ( !selfAssignRoleMenus.includes(messageID) ) {
+    return;
+  }
+
+
+  // Notification Roles
+  if ( messageID === "708594329588858881" ) {
+
+    // Fetch Member Object from User ID
+    let guild = client.guilds.resolve("681805468749922308");
+    await guild.members.fetch();
+    await guild.roles.fetch();
+
+    let member = guild.members.resolve(user.id);
+
+    // Check Emoji removed
+    let emoji = reaction.emoji;
+    let role = guild.roles.resolve(reactionRolesJSON["selfRoleMenu"][emoji].roleID);
+    
+    // Remove Role to User
+    return await member.roles.remove(role, "Self-Removed via #self-assign-roles");
+
+  }
+  
+
+
+  // END of messageReactionRemove Event
+});
 
 
 
