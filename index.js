@@ -45,6 +45,9 @@ for (const file of ticketFiles) {
 
 
 
+// Fetch functions to be run in READY event
+let clock = require('./bot_modules/clock.js');
+
 
 // To make sure the bot is up and running
 client.once("ready", async () => {
@@ -61,6 +64,9 @@ client.once("ready", async () => {
 
   // Self-Assignable Notificiation Role Menu
   await client.guilds.resolve("681805468749922308").channels.resolve("708593358624391178").messages.fetch();
+
+  // Auto-update Clock Channel
+  await clock.execute();
 
 });
 
