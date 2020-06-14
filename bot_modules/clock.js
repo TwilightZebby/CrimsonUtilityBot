@@ -14,7 +14,13 @@ module.exports = {
 
             // Fetch current time and update VC
             let timeNow = new Date();
-            let ukTimeNow = timeNow.getHours() + `:` + timeNow.getMinutes() + ` BST`;
+            let ukHoursNow = parseInt(timeNow.getHours()) + 1;
+
+            if ( ukHoursNow >= 24 ) {
+                ukHoursNow = 0;
+            }
+
+            let ukTimeNow = ukHoursNow + `:` + timeNow.getMinutes() + ` BST`;
 
             await ukClockChannel.setName(ukTimeNow, `Automatic Clock Update`);
 
