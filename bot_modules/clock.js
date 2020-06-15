@@ -15,12 +15,23 @@ module.exports = {
             // Fetch current time and update VC
             let timeNow = new Date();
             let ukHoursNow = parseInt(timeNow.getHours()) + 1;
+            let ukMinsNow = parseInt(timeNow.getMinutes());
 
+            // Formatting
             if ( ukHoursNow >= 24 ) {
                 ukHoursNow = 0;
             }
+            
+            if ( ukHoursNow <= 9 ) {
+                ukHoursNow = `0` + `${ukHoursNow}`;
+            }
 
-            let ukTimeNow = ukHoursNow + `:` + timeNow.getMinutes() + ` BST`;
+            if ( ukMinsNow <= 9 ) {
+                ukMinsNow = `0` + `${ukMinsNow}`;
+            }
+
+
+            let ukTimeNow = ukHoursNow + `:` + ukMinsNow + ` BST`;
 
             await ukClockChannel.setName(ukTimeNow, `Automatic Clock Update`);
 
