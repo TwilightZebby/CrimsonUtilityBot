@@ -6,7 +6,7 @@ let rules = require('../bot_storage/rules.json');
 module.exports = {
     name: 'rule',
     description: 'Used to quickly bring up one of the Rules',
-    usage: '<ruleNumber ie: one, two, four, etc>',
+    usage: '<ruleNumber ie: 1, 2, 4, etc>',
     //aliases: [''],
     args: true,
     commandType: 'general',
@@ -29,7 +29,7 @@ module.exports = {
           return await message.reply(`Sorry, but that isn't an existing Rule. Please try again...`);
         }
         let editRuleString = String(message.content);
-        let amountToRemove = 12 + ruleToEdit.length + 1;
+        let amountToRemove = 11 + ruleToEdit.length + 1;
         editRuleString = editRuleString.slice(amountToRemove, editRuleString.length);
         
         
