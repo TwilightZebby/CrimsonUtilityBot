@@ -76,27 +76,98 @@ client.once("ready", async () => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Debugging
-process.on('warning', console.warn);
+process.on('warning', async (warning) => {
+
+  // Log to console
+  console.warn(warning);
+
+  // Log to error log channel
+  let errorChannel = client.guilds.resolve('681805468749922308').channels.resolve('726336306497454081');
+
+  return await errorChannel.send(`\`\`\`Warning:\n
+  ${warning}
+  \`\`\``);
+
+})
+
 // Extra Error Catching
-process.on('unhandledRejection', error => console.error('Uncaught Promise Rejection', error));
-client.on("error", console.error);
-client.on("rateLimit", (rateLimitInfo) => {
+process.on('unhandledRejection', async (error) => {
 
-  console.log(`*******************************************`);
-  console.log(`RATELIMITED`);
-  console.log(` `);
-  console.log(`Timeout Length: ${rateLimitInfo.timeout}ms`);
-  console.log(`Number of Requests: ${rateLimitInfo.limit}`);
-  console.log(`HTTP Method used: ${rateLimitInfo.method}`);
-  console.log(`Path:\n${rateLimitInfo.path}`);
-  console.log(` `);
-  console.log(`Route:\n${rateLimitInfo.route}`);
-  console.log(`*******************************************`);
+  // Log to console
+  console.error(`Uncaught Promise Rejection:\n`, error);
 
-  return;
+  // Log to error log channel
+  let errorChannel = client.guilds.resolve('681805468749922308').channels.resolve('726336306497454081');
 
-  // END of rateLimit EVENT
+  return await errorChannel.send(`\`\`\`Uncaught Promise Rejection:\n
+  ${error.stack}
+  \`\`\``);
+
+});
+
+
+// Discord Error Handling
+client.on('error', async (error) => {
+
+  // Log to console
+  console.error(error);
+
+  // Log to error log channel
+  let errorChannel = client.guilds.resolve('681805468749922308').channels.resolve('726336306497454081');
+
+  return await errorChannel.send(`\`\`\`Discord Error:\n
+  ${error.stack}
+  \`\`\``);
+
+});
+
+
+client.on('rateLimit', async (rateLimitInfo) => {
+
+  // Log to Console
+  console.warn(rateLimitInfo);
+
+  // Log to error log channel
+  let errorChannel = client.guilds.resolve('681805468749922308').channels.resolve('726336306497454081');
+
+  return await errorChannel.send(`\`\`\`Discord Ratelimit Error:\n
+  Timeout (ms): ${rateLimitInfo.timeout}
+  Limit: ${rateLimitInfo.limit}
+  Method: ${rateLimitInfo.method}
+  Path: ${rateLimitInfo.path}
+  Route: ${rateLimitInfo.route}
+  \`\`\``);
+
+});
+
+
+client.on('warn', async (warning) => {
+
+  // Log to console
+  console.warn(warning);
+
+  // Log to error log channel
+  let errorChannel = client.guilds.resolve('681805468749922308').channels.resolve('726336306497454081');
+
+  return await errorChannel.send(`\`\`\`Discord Warning:\n
+  ${warning}
+  \`\`\``);
+
 });
 
 
@@ -173,6 +244,7 @@ client.on('guildMemberAdd', async (member) => {
   
   // Fetch Channel
   let welcomeChannel = member.guild.channels.resolve('681805469274341419');
+  let generalChannel = member.guild.channels.resolve('681806974916100097');
 
 
   // Fetch Details
@@ -187,11 +259,12 @@ client.on('guildMemberAdd', async (member) => {
   let randomTitle = welcomeTitles[Math.floor((Math.random() * welcomeTitles.length) + 0)];
 
   welcomeEmbed.setTitle(randomTitle);
-  welcomeEmbed.setDescription(`Welcome ${member} to the Crimson Roulette Bot's official Server!`);
+  welcomeEmbed.setDescription(`Welcome ${member} (${member.user.username}) to the Crimson Roulette Bot's official Server!`);
   welcomeEmbed.setThumbnail(userAvatar);
   welcomeEmbed.setFooter(`Total Server Members: ${guildMemberTotal} • Total Members without Bots: ${antiBotTotal}`);
 
   await welcomeChannel.send(welcomeEmbed);
+  await generalChannel.send(welcomeEmbed);
 
   
   let verifyChannel = member.guild.channels.resolve('681806729389801472');
