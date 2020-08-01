@@ -1,5 +1,6 @@
 let { PREFIX } = require('../config.js');
 const Discord = require("discord.js");
+const fs = require('fs');
 const { client } = require('../bot_modules/constants.js');
 let lockdownJSON = require('../bot_storage/lockdownStatus.json');
 

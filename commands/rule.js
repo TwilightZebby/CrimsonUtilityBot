@@ -1,5 +1,6 @@
 let { PREFIX } = require('../config.js');
 const Discord = require("discord.js");
+const fs = require('fs');
 const { client } = require('../bot_modules/constants.js');
 let rules = require('../bot_storage/rules.json');
 
@@ -40,7 +41,9 @@ module.exports = {
         let messageEmbed = storedMessage.embeds[0];
 
         // Edit and send edit
-        messageEmbed.setDescription(editRuleString);
+        messageEmbed.setTitle(`Rule ${ruleToEdit}`)
+        .setDescription(editRuleString)
+        .setFooter(`!rule ${ruleToEdit}`);
         storedMessage.edit(messageEmbed);
 
         
