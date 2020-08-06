@@ -254,7 +254,7 @@ client.on('guildMemberAdd', async (member) => {
 
 
   // Display message
-  const welcomeEmbed = new Discord.MessageEmbed().setColor('#07f51b').setFooter('Greetings Module');
+  const welcomeEmbed = new Discord.MessageEmbed().setColor('#07f51b');
   
   let randomTitle = welcomeTitles[Math.floor((Math.random() * welcomeTitles.length) + 0)];
 
@@ -398,7 +398,7 @@ client.on('guildMemberRemove', async (member) => {
 
 
   // Display message
-  const leavingEmbed = new Discord.MessageEmbed().setColor('#07f51b').setFooter('Greetings Module');
+  const leavingEmbed = new Discord.MessageEmbed().setColor('#07f51b');
   
   let randomTitle = leavingTitles[Math.floor((Math.random() * leavingTitles.length) + 0)];
 
