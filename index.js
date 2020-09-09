@@ -217,7 +217,11 @@ const welcomeTitles = [
   'A new User joined the server!',
   'A new Peep joined the server!',
   'Hey look, the pizza has arrived!',
-  'A new challenger approaches!'
+  'A new challenger approaches!',
+  'LINK START!',
+  'Get ready to go PLUS ULTRAAAA!',
+  'All of Time and Space behind those doors; you interested?',
+  'Are you ready to have a bad time? 😈'
 ];
 
 
@@ -366,7 +370,15 @@ const leavingTitles = [
   'A User left. Let\'s loot their items!',
   'Someone did not want to rumble...',
   'The stars have aligned for this moment... But they\'re the wrong stars',
-  'A User just left'
+  'A User just left',
+  'Thank you for playing my game!',
+  'A User left the old town road',
+  'Wait, there\'s a logout button?',
+  'So *that\'s* where the logout button was!',
+  'Another one bites the dust',
+  'They didn\'t survive beyond the Town of Beginnings...',
+  'They didn\'t survive the Time War...',
+  'The moment has been prepared for...'
 ];
 
 
@@ -403,7 +415,7 @@ client.on('guildMemberRemove', async (member) => {
   let randomTitle = leavingTitles[Math.floor((Math.random() * leavingTitles.length) + 0)];
 
   leavingEmbed.setTitle(randomTitle);
-  leavingEmbed.setDescription(`${memberName} just left. ;-;`);
+  leavingEmbed.setDescription(`${memberName} just left.`);
   leavingEmbed.setThumbnail(memberAvatar);
 
   await leavingChannel.send(leavingEmbed);
