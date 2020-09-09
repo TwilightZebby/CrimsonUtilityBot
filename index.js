@@ -252,6 +252,7 @@ client.on('guildMemberAdd', async (member) => {
 
 
   // Fetch Details
+  await member.guild.members.fetch();
   let userAvatar = member.user.displayAvatarURL();
   let guildMemberTotal = member.guild.memberCount;
   let antiBotTotal = Array.from(member.guild.members.cache.values()).filter(member => { return !member.user.bot; }).length;
