@@ -10,7 +10,7 @@ const { PREFIX, TOKEN } = require('./config.js');
 client.commands = new Discord.Collection();
 client.modules = new Discord.Collection();
 client.throttle = new Discord.Collection();
-const cooldowns = new Discord.Collection();
+client.cooldowns = new Discord.Collection();
 
 // BRING IN COMMAND FILES
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js')); // General Commands
@@ -24,13 +24,13 @@ for (const file of commandFiles) {
 }
 
 for (const file of managementFiles) {
-    const command = require(`./commands/management/${file}`);
-    client.commands.set(command.name, command);
+    const managementCommand = require(`./commands/management/${file}`);
+    client.commands.set(managementCommand.name, managementCommand);
 }
 
 for (const file of moderationFiles) {
-    const command = require(`./commands/moderation/${file}`);
-    client.commands.set(command.name, command);
+    const moderationCommand = require(`./commands/moderation/${file}`);
+    client.commands.set(moderationCommand.name, moderationCommand);
 }
 
 // BRING IN MODULES
@@ -421,8 +421,25 @@ client.on('message', async message => {
 
 
 
-        // TODO: COMMAND LIMITATIONS
-        // This is a placeholder since I don't actually have any Staff Roles on Crimson Support Server yet
+        // COMMAND LIMITATIONS
+        if ( command.limitation ) {
+
+            switch(command.limitation) {
+
+                case 'owner':
+                    if ( message.author.id !== "156482326887530498" ) {
+                        return await client.throttleCheck(message.channel, `${message.member.displayName} sorry, but this command can only be used by TwilightZebby!`, message.author.id);
+                    }
+                    break;
+
+
+                // Just in case
+                default:
+                    break;
+
+            }
+
+        }
 
 
 
@@ -468,7 +485,7 @@ client.on('message', async message => {
 
 
         // COMMAND COOLDOWNS
-        if ( !client.commands.has(command.name) ) {
+        if ( !client.cooldowns.has(command.name) ) {
             client.cooldowns.set(command.name, new Discord.Collection());
         }
 
@@ -587,4 +604,4 @@ client.on('message', async message => {
 
 
 
-await client.login(TOKEN);
+client.login(TOKEN);

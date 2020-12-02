@@ -1,6 +1,3 @@
 /node_modules
-/bot_modules/constants.js
-/helpful_stuff
 config.js
 /bot_storage
-/commands/test.js
