@@ -13,7 +13,7 @@ let { PREFIX } = require('../config.js');
 module.exports = {
     name: 'ping',
     description: 'Returns your average ping to the Bot in milliseconds',
-    usage: ' ',
+    usage: [ `${PREFIX}ping ` ],
 
     // Type of Command
     //     - Use 'general' if not in a sub-folder within .\commands\

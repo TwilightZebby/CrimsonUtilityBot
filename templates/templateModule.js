@@ -3,9 +3,7 @@ const Discord = require('discord.js');
 
 // VARIABLE IMPORTS
 const { client } = require('../constants.js');
-
-// MODULE IMPORTS, IF ANY
-
+const { PREFIX } = require('../config.js');
 
 // THIS MODULE
 module.exports = {
@@ -19,6 +17,14 @@ module.exports = {
      * @returns {Promise<String>} wrapped String
      */
     async Placeholder(boop) {
+
+        // MODULE IMPORTS, IF ANY
+        //const Errors = client.modules.get("errorLogger");
+
+
+
+
+
 
         //.
 

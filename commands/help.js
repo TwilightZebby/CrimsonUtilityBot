@@ -8,12 +8,15 @@ const { PREFIX } = require('../config.js');
 
 // THIS COMMAND
 module.exports = {
-    name: '',
-    description: '',
+    name: 'help',
+    description: 'Lists all my commands, or shows more specific information on a given command',
 
     // Usage(s)
     //     - Using an Array just in case there's multiple usages
-    usage: [ `${PREFIX}name ` ],
+    usage: [
+      `${PREFIX}help `,
+      `${PREFIX}help command`
+    ],
 
     // Type of Command
     //     - Use 'general' if not in a sub-folder within .\commands\
@@ -31,7 +34,7 @@ module.exports = {
     //limitation: 'owner',
 
     // Command's cooldown, in seconds
-    cooldown: 3,
+    cooldown: 4,
 
     // FLAGS
     //     Any flags the Command has (eg: "--boop")
@@ -46,15 +49,39 @@ module.exports = {
      */
     async execute(message, args) {
 
-      // MODULE IMPORTS, IF ANY
-      //const Errors = client.modules.get("errorLogger");
+      // MODULE IMPORTS
+      const Help = client.modules.get("help");
+
+
+
+
+
+
       
+      // IF NO ARGUMENT WAS GIVEN
+      if ( !args.length ) {
+        
+        // CHECK USER FOR COMMAND LIMITATIONS
+        // Owner Check
+        if ( message.author.id === "156482326887530498" ) {
+          return await Help.ListOwnerCommands(message);
+        }
+        else {
+          // Standard User
+          return await Help.ListCommands(message);
+        }
 
+      }
+      else {
 
+        // Fetch argument
+        let argument = args[0].toLowerCase();
 
+        
+        // Bring up command details
+        return await Help.CommandHelp(message, argument);
 
-      
-      //.
+      }
 
       //END OF COMMAND
     },

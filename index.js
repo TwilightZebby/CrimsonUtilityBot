@@ -2,9 +2,13 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 
+
+
 // GLOBAL STUFF
 const { client } = require('./constants.js');
 const { PREFIX, TOKEN } = require('./config.js');
+
+
 
 // MAPS AND COLLECTIONS
 client.commands = new Discord.Collection();
@@ -12,10 +16,15 @@ client.modules = new Discord.Collection();
 client.throttle = new Discord.Collection();
 client.cooldowns = new Discord.Collection();
 
+
+
 // BRING IN COMMAND FILES
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js')); // General Commands
 const managementFiles = fs.readdirSync('./commands/management').filter(file => file.endsWith('.js')); // Management Commands
 const moderationFiles = fs.readdirSync('./commands/moderation').filter(file => file.endsWith('.js')); // Moderation Commands
+const feedbackFiles = fs.readdirSync('./commands/feedback').filter(file => file.endsWith('.js')); // Feedback Commands
+
+
 
 // ADD COMMAND FILES TO COLLECTION
 for (const file of commandFiles) {
@@ -32,6 +41,13 @@ for (const file of moderationFiles) {
     const moderationCommand = require(`./commands/moderation/${file}`);
     client.commands.set(moderationCommand.name, moderationCommand);
 }
+
+for (const file of feedbackFiles) {
+    const feedbackCommand = require(`./commands/feedback/${file}`);
+    client.commands.set(feedbackCommand.name, feedbackCommand);
+}
+
+
 
 // BRING IN MODULES
 const moduleFiles = fs.readdirSync('./bot_modules').filter(file => file.endsWith('.js'));
