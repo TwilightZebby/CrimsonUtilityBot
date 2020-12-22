@@ -4,6 +4,7 @@ const Discord = require("discord.js");
 
 // MODULE IMPORTS
 //const ErrorModule = require('../bot_modules/errorLogger.js');
+const SlashCommands = require('../bot_modules/slashModule.js');
 
 // VARIABLE IMPORTS
 const { client } = require('../constants.js');
@@ -27,13 +28,15 @@ module.exports = {
     /**
      * Command's functionality
      * 
-     * @param {Discord.Message} message 
-     * @param {Array<String>} args
+     * @param {Discord.Guild} guild 
+     * @param {*} data
+     * @param {*} commandData
+     * @param {Discord.GuildMember} member
      */
-    async execute(message, args) {
+    async execute(guild, data, commandData, member) {
 
       //.
 
-      // END OF COMMAND
+      //END OF SLASH COMMAND
     },
 };
