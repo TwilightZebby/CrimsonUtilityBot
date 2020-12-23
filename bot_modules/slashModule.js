@@ -153,22 +153,46 @@ module.exports = {
      * Responds to a Slash Command Interaction
      * 
      * @param {*} eventData
-     * @param {String} message
+     * @param {Number} type Response Type. 3 = w/ MSG Eat Input; 4 = w/ MSG show Input; 5 = w/out MSG show Input
+     * @param {String} [message]
      * @param {Discord.MessageEmbed} [embed]
      * 
      * @returns {Promise<Discord.Message>} wrapped Message
      */
-    async Callback(eventData, message, embed) {
+    async Callback(eventData, type, message, embed) {
+        /* 
+        * RESPONSE TYPES
+        * 1 = Pong                        = ACK a ping
+        * 2 = ACK                         = ACK a command without sending a message, eating the Input
+        * 3 = ChannelMessage              = ACK a command, respond with a message, eat Input
+        * 4 = ChannelMessageWithSource    = ACK a command, respond with a message, show Input
+        * 5 = ACKWithSource               = ACK a command without sending message, show Input
+        */
 
-        const data = {
-            "type": "4",
-            "data": {
-                "tts": false,
-                "content": message,
-                "embeds": embed === undefined ? [] : [embed],
-                "allowed_mentions": []
-            }
-        };
+        
+        let data;
+
+        if ( message == undefined ) {
+
+            data = {
+                "type": `${type}`
+            };
+
+        }
+        else {
+
+            data = {
+                "type": `${type}`,
+                "data": {
+                    "tts": false,
+                    "content": message,
+                    "embeds": embed == undefined ? [] : [embed],
+                    "allowed_mentions": []
+                }
+            };
+
+        }
+
 
         client.api.interactions(eventData.id)[eventData.token].callback().post({data});
 

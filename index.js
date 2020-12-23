@@ -134,8 +134,14 @@ client.throttleCheck = async (channel, message, userID, attachment, embed) => {
 
 
 
-
+/**
+ * @type {Discord.Guild}
+ */
 let SupportGuild;
+
+/**
+ * @type {Discord.TextChannel}
+ */
 let ErrorChannel;
 
 // DISCORD READY EVENT
@@ -169,7 +175,6 @@ client.once('ready', async () => {
     }, 1.08e+7);
 
     console.log("I am ready!");
-    return await ErrorChannel.send(`🟢 Online!`);
 
 });
 
@@ -364,17 +369,16 @@ client.on('raw', async (evt) => {
     const CommandData = data.data;
     const GuildMember = await SupportGuild.members.fetch(data.member.user.id);
 
-    switch (CommandData.name) {
 
-        case "ping":
-            const PingCommand = client.slashCommands.get("ping");
-            return await PingCommand.execute(SupportGuild, data, CommandData, GuildMember);
+    const fetchedSlashCommand = client.slashCommands.get(CommandData.name);
 
-
-
-        default:
-            return;
-
+    if ( !fetchedSlashCommand ) {
+        await SlashModule.Callback(data, 3, `Sorry ${GuildMember.displayName} - something prevented me from executing the **${CommandData.name}** command...`);
+        return;
+    }
+    else {
+        await fetchedSlashCommand.execute(SupportGuild, data, CommandData, GuildMember);
+        return;
     }
 
 });
