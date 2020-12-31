@@ -369,8 +369,7 @@ client.on('guildMemberAdd', async (member) => {
 
 
     const WelcomeChannel = SupportGuild.channels.resolve('681805469274341419');
-    //const SocialChannel = SupportGuild.channels.resolve('681806974916100097');
-    const SocialChannel = SupportGuild.channels.resolve('698462479335948298'); // Testing Channel
+    const SocialChannel = SupportGuild.channels.resolve('681806974916100097');
 
     
     // Fetch Member details

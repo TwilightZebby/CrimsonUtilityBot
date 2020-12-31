@@ -134,6 +134,78 @@ module.exports = {
 
 
 
+
+
+
+
+
+
+
+    /**
+     * Registers the Feedback Slash Command
+     * 
+     * @param {Discord.Guild} guild 
+     */
+    async RegisterFeedback(guild) {
+
+        // Data
+        const data = {};
+        data.name = "feedback";
+        data.description = "Give feedback regarding the Crimson Levels Bot";
+        data.options = new Array();
+
+
+        // Options
+        const option = {};
+
+        option.name = "message";
+        option.description = "Your feedback";
+        option.type = 3; // String
+        option.required = true;
+
+        data.options.push(option);
+
+        client.api.applications(client.user.id).guilds(guild.id).commands().post({data});
+
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * Registers the Slash Commands within Discord's Slash Command API
      * 
@@ -157,6 +229,11 @@ module.exports = {
 
 
 
+                case "feedback":
+                    return await this.RegisterFeedback(guild);
+
+
+
                 default:
                     break;
 
@@ -168,6 +245,7 @@ module.exports = {
             // Register all
             await this.RegisterPing(guild);
             await this.RegisterTime(guild);
+            await this.RegisterFeedback(guild);
 
         }
 
