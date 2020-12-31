@@ -53,6 +53,84 @@ module.exports = {
 
 
 
+    /**
+     * Registers the Time Slash Command
+     * 
+     * @param {Discord.Guild} guild 
+     */
+    async RegisterTime(guild) {
+
+        // Data
+        const data = {};
+        data.name = "time";
+        data.description = "Shows the current time in the UK";
+        data.options = new Array();
+
+
+        // Options
+        const option = {};
+
+        option.name = "timezone";
+        option.description = "Specify a Timezone to compare";
+        option.type = 3; // String
+        option.required = false;
+        option.choices = [
+            {
+                "value": "CST",
+                "name": "CST"
+            },
+            {
+                "value": "EST",
+                "name": "EST"
+            },
+            {
+                "value": "PST",
+                "name": "PST"
+            },
+            {
+                "value": "CET",
+                "name": "CET"
+            },
+            {
+                "value": "MST",
+                "name": "MST"
+            },
+            {
+                "value": "MSK",
+                "name": "MSK"
+            },
+            {
+                "value": "JST",
+                "name": "JST"
+            },
+            {
+                "value": "AEDT",
+                "name": "AEDT"
+            }
+        ];
+
+        data.options.push(option);
+
+        client.api.applications(client.user.id).guilds(guild.id).commands().post({data});
+
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -74,6 +152,11 @@ module.exports = {
 
 
 
+                case "time":
+                    return await this.RegisterTime(guild);
+
+
+
                 default:
                     break;
 
@@ -84,6 +167,7 @@ module.exports = {
 
             // Register all
             await this.RegisterPing(guild);
+            await this.RegisterTime(guild);
 
         }
 

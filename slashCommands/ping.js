@@ -38,5 +38,5 @@ module.exports = {
       return await SlashCommands.Callback(data, 4, `${member.displayName}, your ping is ${member.client.ws.ping.toFixed(2)}ms`);
 
       //END OF SLASH COMMAND
-    },
+    }
 };
