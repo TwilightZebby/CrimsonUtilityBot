@@ -194,7 +194,77 @@ module.exports = {
         }
 
 
-        client.api.interactions(eventData.id)[eventData.token].callback().post({data});
+        return client.api.interactions(eventData.id)[eventData.token].callback().post({data});
+
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Responds to a Slash Command Interaction using Ephemeral Messages (only the User can see)
+     * 
+     * @param {*} eventData
+     * @param {Number} type Response Type. 3 = w/ MSG Eat Input; 4 = w/ MSG show Input; 5 = w/out MSG show Input
+     * @param {String} message
+     * 
+     * @returns {Promise<Discord.Message>} wrapped Message
+     */
+    async CallbackEphemeral(eventData, type, message) {
+        /* 
+        * RESPONSE TYPES
+        * 1 = Pong                        = ACK a ping
+        * 2 = ACK                         = ACK a command without sending a message, eating the Input
+        * 3 = ChannelMessage              = ACK a command, respond with a message, eat Input
+        * 4 = ChannelMessageWithSource    = ACK a command, respond with a message, show Input
+        * 5 = ACKWithSource               = ACK a command without sending message, show Input
+        */
+
+
+        let data = {
+            "type": `${type}`,
+            "data": {
+                "tts": false,
+                "content": message,
+                "embeds": [],
+                "allowed_mentions": [],
+                "flags": 64
+            }
+        };
+
+
+        return client.api.interactions(eventData.id)[eventData.token].callback().post({data});
 
     }
 
