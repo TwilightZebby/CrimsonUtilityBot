@@ -225,7 +225,8 @@ process.on('warning', async (warning) => {
     console.warn(warning);
 
     // Log to Discord
-    return await ErrorChannel.send(`\`\`\`WARNING:
+    return await ErrorChannel.send(`**WARNING:**
+    \`\`\`
     ${warning}
     \`\`\``);
 
@@ -238,7 +239,8 @@ client.on('warn', async (warning) => {
     console.warn(warning);
 
     // Log to Discord
-    return await ErrorChannel.send(`\`\`\`DISCORD WARNING:
+    return await ErrorChannel.send(`**DISCORD WARNING:**
+    \`\`\`
     ${warning}
     \`\`\``);
 
@@ -256,12 +258,12 @@ process.on('unhandledRejection', async (error) => {
     console.error(error);
 
     // Log to Discord
-    return await ErrorChannel.send(`\`\`\`Unhandled Promise Rejection:
+    return await ErrorChannel.send(`**Unhandled Promise Rejection:**
+    \`\`\`
     ${error}
     \`\`\`
-    \n
+    **STACK TRACE:**
     \`\`\`
-    STACK TRACE:
     ${error.stack}
     \`\`\``);
 
@@ -278,12 +280,12 @@ client.on('error', async (error) => {
     console.error(error);
 
     // Log to Discord
-    return await ErrorChannel.send(`\`\`\`DISCORD ERROR:
+    return await ErrorChannel.send(`**DISCORD ERROR:**
+    \`\`\`
     ${error}
     \`\`\`
-    \n
+    **STACK TRACE:**
     \`\`\`
-    STACK TRACE:
     ${error.stack}
     \`\`\``);
 
@@ -309,6 +311,179 @@ client.on('rateLimit', async (rateLimitInfo) => {
     \`\`\``);
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const VerifyModule = require('./bot_modules/verifyModule.js');
+const JoinMessages = require('./jsonFiles/joinMessages.json');
+
+// When a Member joins the Server
+client.on('guildMemberAdd', async (member) => {
+
+    if ( member.partial ) {
+        await member.fetch().catch(err => { return console.error(err); });
+    }
+
+    // Catch non-User Accounts
+    if ( member.user.bot || member.user.system ) { return; }
+
+
+    const WelcomeChannel = SupportGuild.channels.resolve('681805469274341419');
+    //const SocialChannel = SupportGuild.channels.resolve('681806974916100097');
+    const SocialChannel = SupportGuild.channels.resolve('698462479335948298'); // Testing Channel
+
+    
+    // Fetch Member details
+    await member.guild.members.fetch(); // Refresh cache
+    let guildMemberTotal = Array.from(member.guild.members.cache.values()).filter(member => { return !member.user.bot; }).length;
+
+
+    // Embed
+    const embed = new Discord.MessageEmbed().setColor('#07f51b')
+    .setTitle(`${member.user.username}#${member.user.discriminator} joined the server`)
+    .setDescription(`${JoinMessages["messages"][Math.floor( ( Math.random() * JoinMessages["messages"].length ) + 0 )]}`)
+    .setThumbnail(member.user.displayAvatarURL({ format: 'png', dynamic: true }))
+    .setFooter(`Total Server Members: ${guildMemberTotal}`);
+
+    await WelcomeChannel.send(embed);
+    await SocialChannel.send(embed);
+
+    delete embed; // free up cache
+
+
+    // Gateway Channel
+    let gatewayChannel = SupportGuild.channels.resolve('681806729389801472');
+    let gatewayRole = await SupportGuild.roles.fetch('712224145064067112', true);
+
+    await VerifyModule.OnJoin(member, gatewayChannel, gatewayRole);
+
+    return;
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const LeaveMessages = require('./jsonFiles/leaveMessages.json');
+
+// When a Member leaves the Server
+client.on('guildMemberRemove', async (member) => {
+
+    if ( member.partial ) {
+        return;
+    }
+
+
+
+    // Catch non-User Accounts
+    if ( member.user.bot || member.user.system ) { return; }
+
+
+    const WelcomeChannel = SupportGuild.channels.resolve('681805469274341419');
+
+
+    // Embed
+    const embed = new Discord.MessageEmbed().setColor('#730000')
+    .setTitle(`${member.user.username}#${member.user.discriminator} left`)
+    .setDescription(`${LeaveMessages["messages"][Math.floor( ( Math.random() * LeaveMessages["messages"].length ) + 0 )]}`)
+    .setThumbnail(member.user.displayAvatarURL({ format: 'png', dynamic: true }));
+
+    await WelcomeChannel.send(embed);
+
+    delete embed; // free up cache
+
+    return;
+
+});
+
+
+
+
+
+
+
+
 
 
 

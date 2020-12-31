@@ -5,8 +5,9 @@
 const Discord = require("discord.js"); //Bringing in Discord.js
 exports.client = new Discord.Client(
     {
+        partials: [ 'GUILD_MEMBER' ],
         ws: {
-            intents: 7935
+            intents: 32511
         }
     }
 );
