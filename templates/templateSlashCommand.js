@@ -37,6 +37,6 @@ module.exports = {
 
       //.
 
-      //END OF SLASH COMMAND
+      // END OF SLASH COMMAND
     }
 };

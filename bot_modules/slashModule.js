@@ -199,6 +199,64 @@ module.exports = {
 
 
 
+    /**
+     * Registers the Suggest Slash Command
+     * 
+     * @param {Discord.Guild} guild 
+     */
+    async RegisterSuggest(guild) {
+
+        // Data
+        const data = {};
+        data.name = "suggest";
+        data.description = "Suggest something for the Crimson Levels Bot or this Server";
+        data.options = new Array();
+
+
+        // Options
+        const option = {};
+
+        option.name = "message";
+        option.description = "Your suggestion";
+        option.type = 3; // String
+        option.required = true;
+
+        data.options.push(option);
+
+        client.api.applications(client.user.id).guilds(guild.id).commands().post({data});
+
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -234,6 +292,11 @@ module.exports = {
 
 
 
+                case "suggest":
+                    return await this.RegisterSuggest(guild);
+
+
+
                 default:
                     break;
 
@@ -246,6 +309,7 @@ module.exports = {
             await this.RegisterPing(guild);
             await this.RegisterTime(guild);
             await this.RegisterFeedback(guild);
+            await this.RegisterSuggest(guild);
 
         }
 
