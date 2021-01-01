@@ -52,7 +52,7 @@ module.exports = {
 
 
         // Prepare stuff
-        let suggestionJSON = require('../hiddenJsonFiles/suggestions.json');
+        //let suggestionJSON = require('../hiddenJsonFiles/suggestions.json');
         let ticketNumbersJSON = require('../hiddenJsonFiles/ticketNumbers.json');
         ticketNumbersJSON["suggestion"] += 1;
 
@@ -60,7 +60,7 @@ module.exports = {
 
 
         // First, save to JSON files
-        suggestionJSON[ ticketNumbersJSON["suggestion"] ] = {
+        /*suggestionJSON[ ticketNumbersJSON["suggestion"] ] = {
           userID: member.user.id,
           username: member.user.username,
           discrim: member.user.discriminator,
@@ -79,7 +79,7 @@ module.exports = {
             console.error(err);
             return await SlashCommands.CallbackEphemeral(data, 3, `Sorry ${member.displayName} - something wrong happened while processing your suggestion. Please try again later...`);
           }
-        });
+        });*/
 
         fs.writeFile('./hiddenJsonFiles/ticketNumbers.json', JSON.stringify(ticketNumbersJSON, null, 4), async (err) => {
           if (err) {
@@ -126,6 +126,23 @@ module.exports = {
         // edit embed once sent to attach Message ID
         embed.setFooter(`ID: ${suggestionMessage.id}`);
         await suggestionMessage.edit(` `, embed);
+
+
+
+        // Attach reactions
+        let upvoteEmoji = guild.emojis.resolve('706036093597777990');
+        let downvoteEmoji = guild.emojis.resolve('706036093157638225');
+
+        
+        // Timeouts because strict API rate limits on POST Reactions
+        setTimeout(async () => {
+          await suggestionMessage.react(upvoteEmoji);
+        }, 1000);
+        
+        setTimeout(async () => {
+          await suggestionMessage.react(downvoteEmoji);
+        }, 2000);
+
 
         delete embed; // free up cache
 
