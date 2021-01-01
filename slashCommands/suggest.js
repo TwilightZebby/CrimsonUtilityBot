@@ -41,9 +41,17 @@ module.exports = {
       else {
 
 
+        // Check length of suggestion
+        let suggestionString = commandData.options[0].value;
+
+        if ( suggestionString.length > 1024 ) {
+          return await SlashCommands.CallbackEphemeral(data, 3, `Sorry ${member.displayName} - suggestions are limited to being 1024 characters long at most. You sent ${suggestionString.length} characters...`);
+        }
+
+
+
 
         // Prepare stuff
-        let suggestionString = commandData.options[0].value;
         let suggestionJSON = require('../hiddenJsonFiles/suggestions.json');
         let ticketNumbersJSON = require('../hiddenJsonFiles/ticketNumbers.json');
         ticketNumbersJSON["suggestion"] += 1;
