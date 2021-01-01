@@ -14,8 +14,8 @@ const slashModule = require('../bot_modules/slashModule.js');
 
 // THIS COMMAND
 module.exports = {
-    name: 'accept',
-    description: 'Used to accept Suggestions',
+    name: 'deny',
+    description: 'Used to deny Suggestions',
 
     // LIMITATIONS
     //     'twilightzebby' - Only TwilightZebby#1955 can use this command
@@ -43,7 +43,7 @@ module.exports = {
       let suggestionChannel = message.guild.channels.resolve('693366417755602945');
       let suggestionArchiveChannel = message.guild.channels.resolve('693375621321195562');
       let suggestionMessageID = args.shift();
-      let acceptReason = args.join(' ');
+      let denyReason = args.join(' ');
 
 
       // Try to fetch message
@@ -59,11 +59,11 @@ module.exports = {
 
 
       // Fetch Suggestion details & embed,
-      //     then add acceptance reason & reaction counts
+      //     then add denial reason & reaction counts
       let suggestionEmbed = suggestionMessage.embeds.shift();
       let suggestionReactions = Array.from(suggestionMessage.reactions.cache.values());
       
-      suggestionEmbed.setTitle(`Accepted Suggestion`)
+      suggestionEmbed.setTitle(`Denied Suggestion`)
       .addFields(
         {
           name: `Total Votes`,
@@ -71,10 +71,10 @@ module.exports = {
         },
         {
           name: `Reason`,
-          value: `${acceptReason}`
+          value: `${denyReason}`
         }
       )
-      .setColor('#00ad2e');
+      .setColor('#5c0000');
 
 
 
@@ -84,7 +84,7 @@ module.exports = {
       // Delete from Suggestion Channel
       await suggestionMessage.delete({ timeout: 5000 });
 
-      return await message.channel.send(`Accepted Suggestion!`);
+      return await message.channel.send(`Denied Suggestion!`);
 
       // END OF COMMAND
     },

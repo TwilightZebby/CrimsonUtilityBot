@@ -52,35 +52,13 @@ module.exports = {
 
 
         // Prepare stuff
-        //let suggestionJSON = require('../hiddenJsonFiles/suggestions.json');
         let ticketNumbersJSON = require('../hiddenJsonFiles/ticketNumbers.json');
         ticketNumbersJSON["suggestion"] += 1;
 
 
 
 
-        // First, save to JSON files
-        /*suggestionJSON[ ticketNumbersJSON["suggestion"] ] = {
-          userID: member.user.id,
-          username: member.user.username,
-          discrim: member.user.discriminator,
-          userAvatar: member.user.displayAvatarURL({ format: 'png', dynamic: true }),
-          dateTime: Date.now(),
-          suggestion: suggestionString,
-          status: "pending",
-          note: " ",
-          attachment: " "
-        };
-
-
-
-        fs.writeFile('./hiddenJsonFiles/suggestions.json', JSON.stringify(suggestionJSON, null, 4), async (err) => {
-          if (err) {
-            console.error(err);
-            return await SlashCommands.CallbackEphemeral(data, 3, `Sorry ${member.displayName} - something wrong happened while processing your suggestion. Please try again later...`);
-          }
-        });*/
-
+        // First, save to JSON file
         fs.writeFile('./hiddenJsonFiles/ticketNumbers.json', JSON.stringify(ticketNumbersJSON, null, 4), async (err) => {
           if (err) {
             console.error(err);
