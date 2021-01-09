@@ -153,8 +153,8 @@ client.once('ready', async () => {
     await client.user.setPresence(
         {
             activity: {
-                name: `my commands`,
-                type: 'LISTENING'
+                name: `, always watching...`,
+                type: 'WATCHING'
             },
             status: 'online'
         }
@@ -166,8 +166,8 @@ client.once('ready', async () => {
         await client.user.setPresence(
             {
                 activity: {
-                    name: `my commands`,
-                    type: 'LISTENING'
+                    name: `, always watching...`,
+                    type: 'WATCHING'
                 },
                 status: 'online'
             }
@@ -309,6 +309,157 @@ client.on('rateLimit', async (rateLimitInfo) => {
     Path: ${rateLimitInfo.path}
     Route: ${rateLimitInfo.route}
     \`\`\``);
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const ReactionRoleJSON = require('./hiddenJsonFiles/reactionRoles.json');
+// NotifyRoles
+const ReactionRoleMessageIDs = [ '708594329588858881' ];
+
+// When a Reaction is added to a Message
+client.on('messageReactionAdd', async (reaction, user) => {
+
+    // Check for partials
+    if ( reaction.partial ) {
+        await reaction.fetch();
+    }
+
+    if ( reaction.message.partial ) {
+        await reaction.message.fetch();
+    }
+
+    if ( user.partial ) {
+        await user.fetch();
+    }
+
+
+
+    // Check message *is* a Self Assign Roles Menu
+    let messageID = reaction.message.id;
+
+    if ( !ReactionRoleMessageIDs.includes(messageID) ) {
+        return;
+    }
+
+
+
+    // Self Assignable Role Menus
+    let member = await SupportGuild.members.fetch(user.id);
+    let emoji = reaction.emoji;
+    let role = await SupportGuild.roles.fetch(ReactionRoleJSON[`${messageID}`]["emojis"][`${emoji.name}`]);
+
+    return await member.roles.add(role, `Added via a Self-Assign menu`);
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// When a Reaction is removed from a Message
+client.on('messageReactionRemove', async (reaction, user) => {
+
+    // Check for partials
+    if ( reaction.partial ) {
+        await reaction.fetch();
+    }
+
+    if ( reaction.message.partial ) {
+        await reaction.message.fetch();
+    }
+
+    if ( user.partial ) {
+        await user.fetch();
+    }
+
+
+
+    // Check message *is* a Self Assign Roles Menu
+    let messageID = reaction.message.id;
+
+    if ( !ReactionRoleMessageIDs.includes(messageID) ) {
+        return;
+    }
+
+
+
+    // Self Assignable Role Menus
+    let member = await SupportGuild.members.fetch(user.id);
+    let emoji = reaction.emoji;
+    let role = await SupportGuild.roles.fetch(ReactionRoleJSON[`${messageID}`]["emojis"][`${emoji.name}`]);
+
+    return await member.roles.remove(role, `Removed via a Self-Assign menu`);
 
 });
 
@@ -686,6 +837,11 @@ client.on('message', async (message) => {
 
     // Prevent Discord Outages crashing the Bot
     if ( !message.guild.available ) { return; }
+
+
+    if ( message.partial ) {
+        await message.fetch();
+    }
 
 
     // If Message was sent in DMs

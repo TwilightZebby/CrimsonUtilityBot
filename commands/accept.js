@@ -34,6 +34,10 @@ module.exports = {
     async execute(message, args) {
 
       // Check args
+      if ( !args ) {
+        return await message.channel.send(`Sorry ${message.member.displayName} - You didn't provide any arguments. I need an ID and reason!`);
+      }
+
       if ( args.length < 2 ) {
         return await message.channel.send(`Sorry ${message.member.displayName} - I couldn't see an ID or reason....`);
       }
