@@ -45,6 +45,15 @@ module.exports = {
       await message.member.roles.remove(gatewayRole, "Passed Verification");
       await message.member.roles.add(memberRole);
 
+
+      // Check if there's a lockdown in process
+      //     - If there is, add Lockdown Role as well
+      let lockdownJSON = require('../hiddenJsonFiles/lockdownStatus.json');
+      if ( lockdownJSON["status"] === 1 ) {
+        let lockdownRole = await message.guild.roles.fetch("705044968552529960");
+        await message.member.roles.add(lockdownRole);
+      }
+
       return;
 
       // END OF COMMAND
