@@ -153,8 +153,8 @@ client.once('ready', async () => {
     await client.user.setPresence(
         {
             activity: {
-                name: `, always watching...`,
-                type: 'WATCHING'
+                name: `my commands`,
+                type: 'LISTENING'
             },
             status: 'online'
         }
@@ -166,8 +166,8 @@ client.once('ready', async () => {
         await client.user.setPresence(
             {
                 activity: {
-                    name: `, always watching...`,
-                    type: 'WATCHING'
+                    name: `my commands`,
+                    type: 'LISTENING'
                 },
                 status: 'online'
             }
