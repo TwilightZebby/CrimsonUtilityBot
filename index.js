@@ -516,7 +516,13 @@ client.on('guildMemberAdd', async (member) => {
     }
 
     // Catch non-User Accounts
-    if ( member.user.bot || member.user.system ) { return; }
+    if ( member.user.bot ) { 
+        let botGatewayRole = await SupportGuild.roles.fetch('802116975870083133', true);
+        await member.roles.add(botGatewayRole);
+        return;
+    }
+
+    if ( member.user.system ) { return; }
 
 
     const WelcomeChannel = SupportGuild.channels.resolve('681805469274341419');
