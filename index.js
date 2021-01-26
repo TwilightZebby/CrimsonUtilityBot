@@ -353,7 +353,7 @@ client.on('rateLimit', async (rateLimitInfo) => {
 
 const ReactionRoleJSON = require('./hiddenJsonFiles/reactionRoles.json');
 // NotifyRoles
-const ReactionRoleMessageIDs = [ '708594329588858881' ];
+const ReactionRoleMessageIDs = [ '708594329588858881', '803224102881591326' ];
 
 // When a Reaction is added to a Message
 client.on('messageReactionAdd', async (reaction, user) => {
