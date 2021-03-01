@@ -80,17 +80,19 @@ module.exports = {
 
           intervalStore = client.setInterval( async () => {
 
+            if ( i === menuReactions.length ) {
+              client.clearInterval(intervalStore);
+              await message.channel.send(`Checked reactions for the given Message`);
+            }
+
+
+
             if ( menuReactions[i].me === false ) {
               let emoji = menuReactions[i].emoji;
               await messageMenu.react(emoji).catch(console.error);
             }
 
             i++;
-
-            if ( i === menuReactions.length ) {
-              await message.channel.send(`Checked reactions for the given Message`);
-              client.clearInterval(intervalStore);
-            }
 
           }, 1000);
 
