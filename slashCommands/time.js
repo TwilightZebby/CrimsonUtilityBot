@@ -48,7 +48,7 @@ module.exports = {
       // If no options are given
       if ( !commandData.options ) {
 
-        return await SlashCommands.Callback(data, 4, `${member.displayName}, The current time in the UK is ${UKTimezone}`);
+        return await SlashCommands.CallbackEphemeral(data, `${member.displayName}, The current time in the UK is ${UKTimezone}`);
 
       }
       else {
@@ -72,7 +72,7 @@ module.exports = {
               timeZoneName: 'short'
             }).format(now);
 
-            return await SlashCommands.Callback(data, 4, `${member.displayName}, The current time in the UK is ${UKTimezone}.\nIn America/Chicago it is ${otherTimezone}`);
+            return await SlashCommands.CallbackEphemeral(data, `${member.displayName}, The current time in the UK is ${UKTimezone}.\nIn America/Chicago it is ${otherTimezone}`);
 
 
 
@@ -84,7 +84,7 @@ module.exports = {
               timeZoneName: 'short'
             }).format(now);
 
-            return await SlashCommands.Callback(data, 4, `${member.displayName}, The current time in the UK is ${UKTimezone}.\nIn America/Toronto it is ${otherTimezone}`);
+            return await SlashCommands.CallbackEphemeral(data, `${member.displayName}, The current time in the UK is ${UKTimezone}.\nIn America/Toronto it is ${otherTimezone}`);
 
 
 
@@ -96,7 +96,7 @@ module.exports = {
               timeZoneName: 'short'
             }).format(now);
 
-            return await SlashCommands.Callback(data, 4, `${member.displayName}, The current time in the UK is ${UKTimezone}.\nIn America/Los_Angeles it is ${otherTimezone}`);
+            return await SlashCommands.CallbackEphemeral(data, `${member.displayName}, The current time in the UK is ${UKTimezone}.\nIn America/Los_Angeles it is ${otherTimezone}`);
 
 
 
@@ -108,7 +108,7 @@ module.exports = {
               timeZoneName: 'short'
             }).format(now);
 
-            return await SlashCommands.Callback(data, 4, `${member.displayName}, The current time in the UK is ${UKTimezone}.\nIn Europe/Paris it is ${otherTimezone}`);
+            return await SlashCommands.CallbackEphemeral(data, `${member.displayName}, The current time in the UK is ${UKTimezone}.\nIn Europe/Paris it is ${otherTimezone}`);
 
 
 
@@ -120,7 +120,7 @@ module.exports = {
               timeZoneName: 'short'
             }).format(now);
 
-            return await SlashCommands.Callback(data, 4, `${member.displayName}, The current time in the UK is ${UKTimezone}.\nIn America/Phoenix it is ${otherTimezone}`);
+            return await SlashCommands.CallbackEphemeral(data, `${member.displayName}, The current time in the UK is ${UKTimezone}.\nIn America/Phoenix it is ${otherTimezone}`);
 
 
 
@@ -132,7 +132,7 @@ module.exports = {
               timeZoneName: 'short'
             }).format(now);
 
-            return await SlashCommands.Callback(data, 4, `${member.displayName}, The current time in the UK is ${UKTimezone}.\nIn Europe/Moscow it is ${otherTimezone}`);
+            return await SlashCommands.CallbackEphemeral(data, `${member.displayName}, The current time in the UK is ${UKTimezone}.\nIn Europe/Moscow it is ${otherTimezone}`);
 
 
 
@@ -144,7 +144,7 @@ module.exports = {
               timeZoneName: 'short'
             }).format(now);
 
-            return await SlashCommands.Callback(data, 4, `${member.displayName}, The current time in the UK is ${UKTimezone}.\nIn Asia/Tokyo it is ${otherTimezone}`);
+            return await SlashCommands.CallbackEphemeral(data, `${member.displayName}, The current time in the UK is ${UKTimezone}.\nIn Asia/Tokyo it is ${otherTimezone}`);
 
 
 
@@ -156,18 +156,101 @@ module.exports = {
               timeZoneName: 'short'
             }).format(now);
 
-            return await SlashCommands.Callback(data, 4, `${member.displayName}, The current time in the UK is ${UKTimezone}.\nIn Australia/Sydney it is ${otherTimezone}`);
+            return await SlashCommands.CallbackEphemeral(data, `${member.displayName}, The current time in the UK is ${UKTimezone}.\nIn Australia/Sydney it is ${otherTimezone}`);
 
 
 
 
           default:
-            return await SlashCommands.CallbackEphemeral(data, 3, `Sorry ${member.displayName} - either that wasn't a [valid timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List) or I don't support it yet!`);
+            return await SlashCommands.CallbackEphemeral(data, `Sorry ${member.displayName} - either that wasn't a [valid timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List) or I don't support it yet!`);
 
         }
 
       }
 
       //END OF SLASH COMMAND
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Registers the Slash Command
+     * 
+     * @param {Boolean} isGlobal True if Global, False if Guild
+     * @param {String} [guildID] Provide Guild ID if Guild Command, otherwise ignore
+     */
+     async register(isGlobal, guildID) {
+      // Data
+      const data = {};
+      data.name = "time";
+      data.description = "Shows the current time in the UK";
+      data.options = new Array();
+
+
+      // Options
+      const option = {};
+
+      option.name = "timezone";
+      option.description = "Specify a Timezone to compare";
+      option.type = 3; // String
+      option.required = false;
+      option.choices = [
+          {
+              "value": "CST",
+              "name": "CST"
+          },
+          {
+              "value": "EST",
+              "name": "EST"
+          },
+          {
+              "value": "PST",
+              "name": "PST"
+          },
+          {
+              "value": "CET",
+              "name": "CET"
+          },
+          {
+              "value": "MST",
+              "name": "MST"
+          },
+          {
+              "value": "MSK",
+              "name": "MSK"
+          },
+          {
+              "value": "JST",
+              "name": "JST"
+          },
+          {
+              "value": "AEDT",
+              "name": "AEDT"
+          }
+      ];
+
+      data.options.push(option);
+
+      if ( isGlobal ) {
+        client.api.applications(client.user.id).commands().post({data});
+      }
+      else {
+        client.api.applications(client.user.id).guilds(guildID).commands().post({data});
+      }
+
+      return;
     }
 };

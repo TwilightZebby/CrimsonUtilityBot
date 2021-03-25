@@ -708,7 +708,7 @@ client.on('raw', async (evt) => {
     const fetchedSlashCommand = client.slashCommands.get(CommandData.name);
 
     if ( !fetchedSlashCommand ) {
-        await SlashModule.CallbackEphemeral(data, 3, `Sorry ${GuildMember.displayName} - something prevented me from executing the **${CommandData.name}** command...`);
+        await SlashModule.CallbackEphemeral(data, `Sorry ${GuildMember.displayName} - something prevented me from executing the **${CommandData.name}** command...`);
         return;
     }
     else {
@@ -751,16 +751,16 @@ client.on('raw', async (evt) => {
                     // Minutes
                     if ( timeLeft >= 60 && timeLeft < 3600 ) {
                         timeLeft /= 60;
-                        return await SlashModule.CallbackEphemeral(data, 3, `${GuildMember.displayName} - Please wait ${timeLeft.toFixed(1)} more minutes before using the \`${fetchedSlashCommand.name}\` command`);
+                        return await SlashModule.CallbackEphemeral(data, `${GuildMember.displayName} - Please wait ${timeLeft.toFixed(1)} more minutes before using the \`${fetchedSlashCommand.name}\` command`);
                     }
                     // Hours
                     else if ( timeLeft >= 3600 ) {
                         timeLeft /= 3600;
-                        return await SlashModule.CallbackEphemeral(data, 3, `${GuildMember.displayName} - Please wait ${timeLeft.toFixed(1)} more hours before using the \`${fetchedSlashCommand.name}\` command`);
+                        return await SlashModule.CallbackEphemeral(data, `${GuildMember.displayName} - Please wait ${timeLeft.toFixed(1)} more hours before using the \`${fetchedSlashCommand.name}\` command`);
                     }
                     // Seconds
                     else {
-                        return await SlashModule.CallbackEphemeral(data, 3, `${GuildMember.displayName} - Please wait ${timeLeft.toFixed(1)} more seconds before using the \`${fetchedSlashCommand.name}\` command`);
+                        return await SlashModule.CallbackEphemeral(data, `${GuildMember.displayName} - Please wait ${timeLeft.toFixed(1)} more seconds before using the \`${fetchedSlashCommand.name}\` command`);
                     }
 
                 }
@@ -787,7 +787,7 @@ client.on('raw', async (evt) => {
             await fetchedSlashCommand.execute(SupportGuild, data, CommandData, GuildMember);
         } catch (err) {
             await ErrorModule.LogCustom(err, `(**INDEX.JS** - Execute __slash__ command fail)`);
-            await SlashModule.CallbackEphemeral(data, 3, `Sorry ${GuildMember.displayName} - there was an error trying to run that command...`);
+            await SlashModule.CallbackEphemeral(data, `Sorry ${GuildMember.displayName} - there was an error trying to run that command...`);
         }
 
 

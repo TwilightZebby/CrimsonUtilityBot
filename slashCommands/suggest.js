@@ -36,7 +36,7 @@ module.exports = {
     async execute(guild, data, commandData, member) {
 
       if ( !commandData.options ) {
-        return await SlashCommands.CallbackEphemeral(data, 3, `I don't know how you managed to use this command without any inputs ${member.displayName} - but you shouldn't have. Consider this an error message!`);
+        return await SlashCommands.CallbackEphemeral(data, `I don't know how you managed to use this command without any inputs ${member.displayName} - but you shouldn't have. Consider this an error message!`);
       }
       else {
 
@@ -45,7 +45,7 @@ module.exports = {
         let suggestionString = commandData.options[0].value;
 
         if ( suggestionString.length > 1024 ) {
-          return await SlashCommands.CallbackEphemeral(data, 3, `Sorry ${member.displayName} - suggestions are limited to being 1024 characters long at most. You sent ${suggestionString.length} characters...`);
+          return await SlashCommands.CallbackEphemeral(data, `Sorry ${member.displayName} - suggestions are limited to being 1024 characters long at most. You sent ${suggestionString.length} characters...`);
         }
 
 
@@ -126,12 +126,62 @@ module.exports = {
 
 
         // send user response
-        return await SlashCommands.CallbackEphemeral(data, 3, `Your suggestion has been posted! (See the Suggestion Channel: \<\#693366417755602945\> )`);
+        return await SlashCommands.CallbackEphemeral(data, `Your suggestion has been posted! (See the Suggestion Channel: \<\#693366417755602945\> )`);
         
         
 
       }
 
       // END OF SLASH COMMAND
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Registers the Slash Command
+     * 
+     * @param {Boolean} isGlobal True if Global, False if Guild
+     * @param {String} [guildID] Provide Guild ID if Guild Command, otherwise ignore
+     */
+     async register(isGlobal, guildID) {
+      // Data
+      const data = {};
+      data.name = "suggest";
+      data.description = "Suggest something for the Crimson Levels Bot or this Server";
+      data.options = new Array();
+
+
+      // Options
+      const option = {};
+
+      option.name = "message";
+      option.description = "Your suggestion";
+      option.type = 3; // String
+      option.required = true;
+
+      data.options.push(option);
+
+      if ( isGlobal ) {
+        client.api.applications(client.user.id).commands().post({data});
+      }
+      else {
+        client.api.applications(client.user.id).guilds(guildID).commands().post({data});
+      }
+
+      return;
     }
 };

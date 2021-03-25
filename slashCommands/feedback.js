@@ -37,7 +37,7 @@ module.exports = {
 
       // Grab input
       if ( !commandData.options ) {
-        return await SlashCommands.CallbackEphemeral(data, 3, `I don't know how you managed to use this command without any inputs ${member.displayName} - but you shouldn't have. Consider this an error message!`);
+        return await SlashCommands.CallbackEphemeral(data, `I don't know how you managed to use this command without any inputs ${member.displayName} - but you shouldn't have. Consider this an error message!`);
       }
       else {
 
@@ -48,7 +48,7 @@ module.exports = {
 
         // Check string length
         if ( feedbackString.length > 2047 ) {
-          return await SlashCommands.CallbackEphemeral(data, 3, `Sorry ${member.displayName} - but the maximum length for feedback is 2047 characters. You sent ${feedbackString.length} characters. Please shorten your feedback :)`);
+          return await SlashCommands.CallbackEphemeral(data, `Sorry ${member.displayName} - but the maximum length for feedback is 2047 characters. You sent ${feedbackString.length} characters. Please shorten your feedback :)`);
         }
 
 
@@ -66,10 +66,59 @@ module.exports = {
 
 
         // Send User Response
-        return await SlashCommands.CallbackEphemeral(data, 3, `Successfully posted your Feedback to the Feedback Channel ( \<\#693366455525179403\> )`);
+        return await SlashCommands.CallbackEphemeral(data, `Successfully posted your Feedback to the Feedback Channel ( \<\#693366455525179403\> )`);
 
       }
 
       //END OF SLASH COMMAND
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Registers the Slash Command
+     * 
+     * @param {Boolean} isGlobal True if Global, False if Guild
+     * @param {String} [guildID] Provide Guild ID if Guild Command, otherwise ignore
+     */
+     async register(isGlobal, guildID) {
+      // Data
+      const data = {};
+      data.name = "feedback";
+      data.description = "Give feedback regarding the Crimson Levels Bot";
+      data.options = new Array();
+
+
+      // Options
+      const option = {};
+
+      option.name = "message";
+      option.description = "Your feedback";
+      option.type = 3; // String
+      option.required = true;
+
+      data.options.push(option);
+
+      if ( isGlobal ) {
+        client.api.applications(client.user.id).commands().post({data});
+      }
+      else {
+        client.api.applications(client.user.id).guilds(guildID).commands().post({data});
+      }
+
+      return;
     }
 };

@@ -1,6 +1,6 @@
 {
   "name": "crimsonutilitybot",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A small Discord Bot used to help with features of the CrimsonRoulette Bots own Discord Server",
   "main": "index.js",
   "dependencies": {
